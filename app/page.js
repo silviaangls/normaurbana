@@ -57,7 +57,7 @@ export default function HomePage() {
           <p className="text-sm" style={{ color: '#475569' }}>
             <strong>Intervención:</strong> {normas.nombre} &nbsp;|&nbsp;
             <strong>Tipo de vía:</strong> {tipoViaInfo?.label || '—'} &nbsp;|&nbsp;
-            <strong>Alcaldía:</strong> {alcaldia} &nbsp;|&nbsp;
+            <strong>Proyecto en:</strong> {alcaldia} &nbsp;|&nbsp;
             <strong>Fecha:</strong>{' '}
             {new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })}
           </p>
@@ -119,7 +119,7 @@ export default function HomePage() {
             {/* Alcaldía */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="alcaldia">
-                Alcaldía
+                Alcaldía del proyecto
               </label>
               <div className="relative">
                 <select
@@ -135,6 +135,9 @@ export default function HomePage() {
                 </select>
                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▾</span>
               </div>
+              <p className="mt-1.5 text-xs text-slate-600">
+                Solo para identificación de la ficha técnica
+              </p>
             </div>
 
             {/* Tipo de intervención */}
@@ -232,7 +235,7 @@ export default function HomePage() {
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Ficha técnica</span>
                 <span className="text-slate-700">·</span>
-                <span className="text-xs font-mono text-blue-400">{alcaldia}</span>
+                <span className="text-xs font-mono text-slate-400">Proyecto en {alcaldia}</span>
                 {tipoViaInfo && (
                   <>
                     <span className="text-slate-700">·</span>

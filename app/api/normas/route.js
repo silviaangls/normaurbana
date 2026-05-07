@@ -4,6 +4,7 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url)
   const intervencion = searchParams.get('intervencion')
   const tipoVia = searchParams.get('tipoVia') || ''
+  // alcaldía se recibe pero no filtra normas: en CDMX aplican igual en todas las alcaldías
 
   if (!intervencion) {
     return Response.json(
