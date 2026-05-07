@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;
+  --foreground: #f1f5f9;
 }
 
 @theme inline {
@@ -12,15 +12,223 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ────────────────────────────────────────
+   Márgenes de página (1.5 cm en todos lados)
+   ──────────────────────────────────────── */
+@page {
+  margin: 1.5cm;
+  size: A4 portrait;
+}
+
+/* ────────────────────────────────────────
+   ESTILOS DE IMPRESIÓN / PDF
+   ──────────────────────────────────────── */
+@media print {
+  /* Preservar colores exactos al imprimir */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ── Reset global a tema claro ── */
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+    font-family: system-ui, Arial, sans-serif !important;
+  }
+
+  /* Borrar todos los fondos oscuros heredados */
+  body * {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* ── Visibilidad de secciones ── */
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* ── Contenedor de resultados ── */
+  #resultados {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* ════════════════════════════════════
+     TABLAS DE NORMAS (.print-table)
+     ════════════════════════════════════ */
+
+  .print-table {
+    background: #ffffff !important;
+    border: 1.5pt solid #475569 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;      /* evita que se corte contenido */
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 18pt;
+  }
+
+  /* Encabezado de sección (Normas Obligatorias, etc.) */
+  .print-table-header {
+    background: #f1f5f9 !important;
+    border-bottom: 1.5pt solid #475569 !important;
+    padding: 6pt 10pt !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6pt !important;
+  }
+
+  .print-table-header h3 {
+    color: #1e293b !important;
+    font-size: 9pt !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700 !important;
+  }
+
+  /* Ocultar badge de conteo de parámetros */
+  .print-table-header > span:last-child {
+    display: none !important;
+  }
+
+  /* Wrapper que en pantalla tiene overflow-x-auto */
+  .print-table-scroll {
+    overflow: visible !important;
+  }
+
+  /* ── Tabla HTML ── */
+  .print-table table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;   /* columnas de ancho fijo */
+    font-size: 8.5pt !important;
+    page-break-inside: auto !important;
+  }
+
+  /* Repetir cabecera en cada página */
+  .print-table thead {
+    display: table-header-group !important;
+  }
+
+  /* Evitar que una fila se parta entre páginas */
+  .print-table tbody tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* ── Anchos de columna fijos (6 cols: •, Parámetro, Valor, Unidad, Fuente, Detalle) ── */
+  .print-table th:nth-child(1),
+  .print-table td:nth-child(1) { display: none !important; }          /* • oculto en PDF */
+
+  .print-table th:nth-child(2),
+  .print-table td:nth-child(2) { width: 21% !important; }             /* Parámetro */
+
+  .print-table th:nth-child(3),
+  .print-table td:nth-child(3) { width: 11% !important; }             /* Valor */
+
+  .print-table th:nth-child(4),
+  .print-table td:nth-child(4) { width: 8% !important; }              /* Unidad */
+
+  .print-table th:nth-child(5),
+  .print-table td:nth-child(5) { width: 18% !important; }             /* Fuente */
+
+  .print-table th:nth-child(6),
+  .print-table td:nth-child(6) { width: 42% !important; }             /* Detalle */
+
+  /* ── Celdas de encabezado ── */
+  .print-table th {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border: 0.75pt solid #94a3b8 !important;
+    padding: 5pt 7pt !important;
+    font-size: 7.5pt !important;
+    text-align: left !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    font-weight: 600 !important;
+  }
+
+  /* ── Celdas de datos ── */
+  .print-table td {
+    background: #ffffff !important;
+    border: 0.75pt solid #cbd5e1 !important;
+    padding: 5pt 7pt !important;
+    color: #1e293b !important;
+    vertical-align: top !important;
+    /* Columna Detalle: texto completo sin cortes */
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+  }
+
+  /* Fila par con fondo muy sutil */
+  .print-table tbody tr:nth-child(even) td {
+    background: #f8fafc !important;
+  }
+
+  /* Badge de fuente: bordes visibles, sin color de fondo */
+  .print-table td span {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0.5pt solid #64748b !important;
+    color: #334155 !important;
+    font-size: 7pt !important;
+    padding: 1pt 4pt !important;
+    border-radius: 2pt !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* ════════════════════════════════════
+     GRÁFICA DE BARRAS (.print-chart)
+     ════════════════════════════════════ */
+
+  .print-chart {
+    background: #ffffff !important;
+    border: 1.5pt solid #475569 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-top: 18pt;
+  }
+
+  .print-chart-header {
+    background: #f1f5f9 !important;
+    border-bottom: 1.5pt solid #475569 !important;
+    padding: 6pt 10pt !important;
+  }
+
+  .print-chart-header h3 {
+    color: #1e293b !important;
+    font-size: 9pt !important;
+    font-weight: 600 !important;
+  }
+
+  .print-chart-scroll {
+    overflow: visible !important;
+  }
+
+  /* Texto del SVG: oscuro para impresión */
+  .print-chart text {
+    fill: #334155 !important;
+  }
+
+  /* Pista de barra: gris claro en lugar de slate-800 */
+  .print-chart .bar-track {
+    fill: #e2e8f0 !important;
+  }
 }
