@@ -208,12 +208,22 @@ export default function NormasTable({ datos, color }) {
                 </td>
 
                 <td className="px-4 py-3 whitespace-nowrap">
-                  <span
-                    className="text-xs px-2 py-0.5 rounded font-medium"
-                    style={{ background: '#1f1f1f', border: '1px solid #333333', color: '#e0e0e0' }}
-                  >
-                    {row.fuente}
-                  </span>
+                  <div className="flex flex-col gap-1">
+                    <span
+                      className="text-xs px-2 py-0.5 rounded font-medium"
+                      style={{ background: '#1f1f1f', border: '1px solid #333333', color: '#e0e0e0' }}
+                    >
+                      {row.fuente}
+                    </span>
+                    {row.referencia && (
+                      <span
+                        className="text-xs leading-tight"
+                        style={{ color: '#666666' }}
+                      >
+                        {row.referencia}
+                      </span>
+                    )}
+                  </div>
                 </td>
 
                 <td className="px-4 py-3 text-xs leading-relaxed break-words" style={{ color: '#888888' }}>
