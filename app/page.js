@@ -19,6 +19,15 @@ export default function HomePage() {
 
   const canSubmit = alcaldia && intervencion && tipoVia && !loading
 
+  const handleReset = () => {
+    setAlcaldia('')
+    setIntervencion('')
+    setTipoVia('')
+    setNormas(null)
+    setError(null)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!canSubmit) return
@@ -82,8 +91,10 @@ export default function HomePage() {
             <div>
               <div className="flex items-center gap-3 mb-3">
                 <h1
-                  className="text-3xl tracking-tight"
+                  className="text-3xl tracking-tight cursor-pointer select-none"
                   style={{ fontFamily: 'var(--font-space-grotesk)', fontWeight: 700 }}
+                  onClick={handleReset}
+                  title="Volver al inicio"
                 >
                   <span style={{ color: '#ffffff' }}>Norma</span><span style={{ color: '#888888' }}>Urb</span>
                 </h1>
