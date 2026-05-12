@@ -17,22 +17,31 @@ export default function BarChart({ data, title }) {
   const svgH = parsed.length * ROW_H + PAD * 2
 
   return (
-    <div className="print-chart rounded-xl border border-slate-700/50 overflow-hidden">
+    <div
+      className="print-chart rounded-xl overflow-hidden"
+      style={{ border: '1px solid #2a2a2a', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}
+    >
       {/* Encabezado */}
-      <div className="print-chart-header px-5 py-3 bg-slate-800/60 border-b border-slate-700/40 flex items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <div
+        className="print-chart-header px-5 py-3 flex items-center gap-3"
+        style={{ background: '#1a1a1a', borderBottom: '1px solid #2a2a2a' }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ color: '#888888' }}>
           <line x1="18" y1="20" x2="18" y2="10" />
           <line x1="12" y1="20" x2="12" y2="4" />
           <line x1="6" y1="20" x2="6" y2="14" />
           <line x1="2" y1="20" x2="22" y2="20" />
         </svg>
-        <h3 className="text-sm font-semibold text-slate-200 tracking-wide">
+        <h3
+          className="text-sm tracking-wide"
+          style={{ fontWeight: 600, color: '#e0e0e0' }}
+        >
           {title}
         </h3>
       </div>
 
       {/* Gráfica */}
-      <div className="print-chart-scroll p-4 overflow-x-auto">
+      <div className="print-chart-scroll p-4 overflow-x-auto" style={{ background: '#111111' }}>
         <svg
           viewBox={`0 0 ${SVG_W} ${svgH}`}
           className="w-full"
@@ -50,7 +59,7 @@ export default function BarChart({ data, title }) {
                   x={LABEL_W - 10}
                   y={y + ROW_H / 2 + 4}
                   textAnchor="end"
-                  fill="#94a3b8"
+                  fill="#888888"
                   fontSize="11.5"
                   fontFamily="ui-monospace, monospace"
                 >
@@ -64,7 +73,7 @@ export default function BarChart({ data, title }) {
                   y={y + 10}
                   width={BAR_W}
                   height={ROW_H - 20}
-                  fill="#1e293b"
+                  fill="#1a1a1a"
                   rx="5"
                 />
 

@@ -2,30 +2,27 @@
 
 const THEME = {
   amber: {
-    header: 'bg-amber-500/10 border-b border-amber-500/30',
-    badge: 'bg-amber-500/20 text-amber-300 border border-amber-500/40',
-    title: 'text-amber-300',
-    dot: 'bg-amber-400',
-    row: 'hover:bg-amber-500/5',
-    border: 'border-amber-500/20',
+    accentColor: '#d4a017',
+    accentBg: 'rgba(212,160,23,0.08)',
+    accentBorder: 'rgba(212,160,23,0.2)',
+    dot: 'bg-[#d4a017]',
+    row: '',
     label: 'Normas Obligatorias',
   },
   blue: {
-    header: 'bg-blue-500/10 border-b border-blue-500/30',
-    badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/40',
-    title: 'text-blue-300',
-    dot: 'bg-blue-400',
-    row: 'hover:bg-blue-500/5',
-    border: 'border-blue-500/20',
+    accentColor: '#4a9eff',
+    accentBg: 'rgba(74,158,255,0.08)',
+    accentBorder: 'rgba(74,158,255,0.2)',
+    dot: 'bg-[#4a9eff]',
+    row: '',
     label: 'Recomendaciones de Manuales Nacionales',
   },
   emerald: {
-    header: 'bg-emerald-500/10 border-b border-emerald-500/30',
-    badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40',
-    title: 'text-emerald-300',
-    dot: 'bg-emerald-400',
-    row: 'hover:bg-emerald-500/5',
-    border: 'border-emerald-500/20',
+    accentColor: '#2ecc71',
+    accentBg: 'rgba(46,204,113,0.08)',
+    accentBorder: 'rgba(46,204,113,0.2)',
+    dot: 'bg-[#2ecc71]',
+    row: '',
     label: 'Referencias Internacionales',
   },
 }
@@ -88,11 +85,23 @@ export default function NormasTable({ datos, color }) {
   const hasModifications = datos.some((r) => r.tipoViaModificado || r.tipoViaAdicional)
 
   return (
-    <div className={`print-table rounded-xl border ${theme.border} overflow-hidden`}>
+    <div
+      className="print-table rounded-xl overflow-hidden"
+      style={{
+        border: '1px solid #2a2a2a',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+      }}
+    >
       {/* Encabezado de sección */}
-      <div className={`print-table-header px-5 py-3 flex items-center gap-3 ${theme.header}`}>
-        <span className={theme.title}>{ICONS[color]}</span>
-        <h3 className={`font-semibold text-sm tracking-wide uppercase ${theme.title}`}>
+      <div
+        className="print-table-header px-5 py-3 flex items-center gap-3"
+        style={{ background: '#1a1a1a', borderBottom: '1px solid #2a2a2a' }}
+      >
+        <span style={{ color: theme.accentColor }}>{ICONS[color]}</span>
+        <h3
+          className="font-semibold text-sm tracking-wide uppercase"
+          style={{ color: theme.accentColor }}
+        >
           {theme.label}
         </h3>
         <div className="ml-auto flex items-center gap-2">
@@ -101,7 +110,14 @@ export default function NormasTable({ datos, color }) {
               Ajustado por tipo de vía
             </span>
           )}
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${theme.badge}`}>
+          <span
+            className="text-xs px-2 py-0.5 rounded-full font-medium"
+            style={{
+              background: theme.accentBg,
+              border: `1px solid ${theme.accentBorder}`,
+              color: theme.accentColor,
+            }}
+          >
             {datos.length} parámetros
           </span>
         </div>
@@ -111,65 +127,96 @@ export default function NormasTable({ datos, color }) {
       <div className="print-table-scroll overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-slate-800/60 text-slate-400 text-xs uppercase tracking-wider">
-              <th className="px-4 py-3 text-left font-medium w-6">—</th>
-              <th className="px-4 py-3 text-left font-medium">Parámetro</th>
-              <th className="px-4 py-3 text-right font-medium">Valor</th>
-              <th className="px-4 py-3 text-left font-medium">Unidad</th>
-              <th className="px-4 py-3 text-left font-medium">Fuente</th>
-              <th className="px-4 py-3 text-left font-medium min-w-64">Detalle</th>
+            <tr
+              className="text-xs uppercase tracking-wider"
+              style={{ background: '#111111', borderBottom: '1px solid #2a2a2a' }}
+            >
+              <th className="px-4 py-3 text-left font-medium w-6" style={{ color: '#888888' }}>—</th>
+              <th className="px-4 py-3 text-left font-medium" style={{ color: '#888888' }}>Parámetro</th>
+              <th className="px-4 py-3 text-right font-medium" style={{ color: '#888888' }}>Valor</th>
+              <th className="px-4 py-3 text-left font-medium" style={{ color: '#888888' }}>Unidad</th>
+              <th className="px-4 py-3 text-left font-medium" style={{ color: '#888888' }}>Fuente</th>
+              <th className="px-4 py-3 text-left font-medium min-w-64" style={{ color: '#888888' }}>Detalle</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700/40">
+          <tbody className="divide-y divide-[#2a2a2a]">
             {datos.map((row, i) => (
               <tr
                 key={i}
-                className={`transition-colors ${theme.row} ${
-                  row.tipoViaModificado ? 'bg-orange-400/5' : ''
-                } ${row.tipoViaAdicional ? 'bg-purple-400/5' : ''}`}
+                className="transition-colors"
+                style={{
+                  background: row.tipoViaModificado
+                    ? 'rgba(251,146,60,0.03)'
+                    : row.tipoViaAdicional
+                    ? 'rgba(192,132,252,0.03)'
+                    : 'transparent',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = row.tipoViaModificado
+                    ? 'rgba(251,146,60,0.03)'
+                    : row.tipoViaAdicional
+                    ? 'rgba(192,132,252,0.03)'
+                    : 'transparent'
+                }}
               >
                 {/* Indicador (oculto en PDF) */}
                 <td className="px-4 py-3">
-                  <span className={`inline-block w-1.5 h-1.5 rounded-full ${
-                    row.tipoViaModificado ? 'bg-orange-400' :
-                    row.tipoViaAdicional  ? 'bg-purple-400' :
-                    theme.dot
-                  }`} />
+                  <span
+                    className={`inline-block w-1.5 h-1.5 rounded-full ${
+                      row.tipoViaModificado ? 'bg-orange-400' :
+                      row.tipoViaAdicional  ? 'bg-purple-400' :
+                      theme.dot
+                    }`}
+                  />
                 </td>
 
-                {/* Parámetro + badge de tipo de vía */}
-                <td className="px-4 py-3 font-medium text-slate-100">
+                {/* Parámetro */}
+                <td className="px-4 py-3 font-medium" style={{ color: '#f5f5f5' }}>
                   <div className="flex flex-col">
                     <span className="whitespace-nowrap">{row.parametro}</span>
                     <TipoViaBadge row={row} />
                   </div>
                 </td>
 
-                {/* Valor + valor base tachado si fue modificado */}
-                <td className="px-4 py-3 text-right font-mono font-semibold whitespace-nowrap">
+                {/* Valor */}
+                <td className="px-4 py-3 text-right whitespace-nowrap">
                   <div className="flex flex-col items-end gap-0.5">
-                    <span className={row.tipoViaModificado ? 'text-orange-300' : 'text-white'}>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-space-grotesk)',
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        color: row.tipoViaModificado ? '#fb923c' : '#ffffff',
+                      }}
+                    >
                       {row.valor}
                     </span>
                     {row.tipoViaModificado && row.valorBase && (
-                      <span className="text-slate-600 text-xs line-through font-normal">
+                      <span
+                        className="text-xs line-through font-normal"
+                        style={{ color: '#555555' }}
+                      >
                         {row.valorBase}
                       </span>
                     )}
                   </div>
                 </td>
 
-                <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+                <td className="px-4 py-3 whitespace-nowrap" style={{ color: '#888888' }}>
                   {row.unidad}
                 </td>
 
                 <td className="px-4 py-3 whitespace-nowrap">
-                  <span className={`text-xs px-2 py-0.5 rounded font-medium ${theme.badge}`}>
+                  <span
+                    className="text-xs px-2 py-0.5 rounded font-medium"
+                    style={{ background: '#1f1f1f', border: '1px solid #333333', color: '#e0e0e0' }}
+                  >
                     {row.fuente}
                   </span>
                 </td>
 
-                <td className="px-4 py-3 text-slate-400 text-xs leading-relaxed break-words">
+                <td className="px-4 py-3 text-xs leading-relaxed break-words" style={{ color: '#888888' }}>
                   {row.detalle}
                 </td>
               </tr>

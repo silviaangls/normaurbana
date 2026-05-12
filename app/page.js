@@ -6,6 +6,9 @@ import BarChart from './components/BarChart'
 import PDFExport from './components/PDFExport'
 import { ALCALDIAS, INTERVENCIONES, TIPOS_VIA } from '@/lib/normas'
 
+const selectClass =
+  'w-full appearance-none bg-[#111111] border border-[#333333] text-[#f5f5f5] text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-1 focus:ring-white/20 focus:border-[#555555] transition-colors'
+
 export default function HomePage() {
   const [alcaldia, setAlcaldia] = useState('')
   const [intervencion, setIntervencion] = useState('')
@@ -45,8 +48,14 @@ export default function HomePage() {
 
   const tipoViaInfo = TIPOS_VIA.find((t) => t.value === tipoVia)
 
+  const buttonClass = loading
+    ? 'inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a1a1a] border border-[#2a2a2a] text-[#888888] cursor-not-allowed font-semibold text-sm rounded-lg transition-colors'
+    : canSubmit
+    ? 'inline-flex items-center gap-2 px-6 py-2.5 bg-white hover:bg-white/90 text-black font-semibold text-sm rounded-lg transition-colors shadow-sm'
+    : 'inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a1a1a] border border-[#2a2a2a] text-[#555555] cursor-not-allowed font-semibold text-sm rounded-lg transition-colors'
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-[#0a0a0a] text-[#f5f5f5]">
       {/* ── Print-only header ── */}
       <div className="print-only p-6 border-b border-slate-300" style={{ display: 'none' }}>
         <div className="flex items-center gap-4 mb-1">
@@ -67,37 +76,30 @@ export default function HomePage() {
       {/* ══════════════════════════════════════
           HEADER
       ══════════════════════════════════════ */}
-      <header className="no-print relative overflow-hidden border-b border-slate-800/80">
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse 70% 60% at 50% -10%, #1d4ed820 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div className="relative max-w-6xl mx-auto px-6 py-10">
+      <header className="no-print border-b border-[#1f1f1f]">
+        <div className="max-w-6xl mx-auto px-6 py-10">
           <div className="flex items-start justify-between gap-6 flex-wrap">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 shadow-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 9.5L12 3l9 6.5V21H3V9.5Z" />
-                  </svg>
-                </div>
-                <h1 className="text-3xl font-black tracking-tight text-white">
-                  Norma<span className="text-blue-400">Urb</span>
+              <div className="flex items-center gap-3 mb-3">
+                <h1
+                  className="text-3xl tracking-tight"
+                  style={{ fontFamily: 'var(--font-space-grotesk)', fontWeight: 700 }}
+                >
+                  <span style={{ color: '#ffffff' }}>Norma</span><span style={{ color: '#888888' }}>Urb</span>
                 </h1>
               </div>
-              <p className="text-slate-400 text-sm leading-relaxed max-w-xl">
+              <p className="text-sm leading-relaxed max-w-xl" style={{ color: '#888888' }}>
                 Consultor de normas de diseño urbano para intervenciones en vía pública en la Ciudad de México.
                 Integra RCDF, NOM-034-SCT2, Manual de Calles, NACTO, ITDP, CROW y SEDATU.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 items-start pt-1">
               {['RCDF', 'NOM-034', 'Manual CDMX', 'NACTO', 'ITDP', 'CROW', 'SEDATU'].map((s) => (
-                <span key={s} className="text-xs px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-slate-400 font-mono">
+                <span
+                  key={s}
+                  className="text-xs px-2 py-1 rounded-md font-mono"
+                  style={{ background: '#1f1f1f', border: '1px solid #333333', color: '#888888' }}
+                >
                   {s}
                 </span>
               ))}
@@ -110,69 +112,65 @@ export default function HomePage() {
           FORM
       ══════════════════════════════════════ */}
       <section className="no-print max-w-6xl mx-auto px-6 py-8">
-        <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 shadow-xl">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl p-6"
+          style={{
+            background: '#111111',
+            border: '1px solid #2a2a2a',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.6)',
+          }}
+        >
+          <h2
+            className="text-xs uppercase tracking-widest mb-4"
+            style={{ color: '#888888', fontWeight: 500 }}
+          >
             Parámetros de consulta
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
             {/* Alcaldía */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="alcaldia">
+              <label className="block text-sm mb-1.5" style={{ color: '#e0e0e0', fontWeight: 500 }} htmlFor="alcaldia">
                 Alcaldía del proyecto
               </label>
               <div className="relative">
-                <select
-                  id="alcaldia"
-                  value={alcaldia}
-                  onChange={(e) => setAlcaldia(e.target.value)}
-                  className="w-full appearance-none bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                >
+                <select id="alcaldia" value={alcaldia} onChange={(e) => setAlcaldia(e.target.value)} className={selectClass}>
                   <option value="">Seleccionar alcaldía…</option>
                   {ALCALDIAS.map((a) => (
                     <option key={a} value={a}>{a}</option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▾</span>
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#888888' }}>▾</span>
               </div>
-              <p className="mt-1.5 text-xs text-slate-600">
+              <p className="mt-1.5 text-xs" style={{ color: '#888888' }}>
                 Solo para identificación de la ficha técnica
               </p>
             </div>
 
             {/* Tipo de intervención */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="intervencion">
+              <label className="block text-sm mb-1.5" style={{ color: '#e0e0e0', fontWeight: 500 }} htmlFor="intervencion">
                 Tipo de intervención
               </label>
               <div className="relative">
-                <select
-                  id="intervencion"
-                  value={intervencion}
-                  onChange={(e) => setIntervencion(e.target.value)}
-                  className="w-full appearance-none bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                >
+                <select id="intervencion" value={intervencion} onChange={(e) => setIntervencion(e.target.value)} className={selectClass}>
                   <option value="">Seleccionar tipo…</option>
                   {INTERVENCIONES.map((t) => (
                     <option key={t.value} value={t.value}>{t.label}</option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▾</span>
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#888888' }}>▾</span>
               </div>
             </div>
 
-            {/* Tipo de vía — NUEVO */}
+            {/* Tipo de vía */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="tipoVia">
+              <label className="block text-sm mb-1.5" style={{ color: '#e0e0e0', fontWeight: 500 }} htmlFor="tipoVia">
                 Tipo de vía
               </label>
               <div className="relative">
-                <select
-                  id="tipoVia"
-                  value={tipoVia}
-                  onChange={(e) => setTipoVia(e.target.value)}
-                  className="w-full appearance-none bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                >
+                <select id="tipoVia" value={tipoVia} onChange={(e) => setTipoVia(e.target.value)} className={selectClass}>
                   <option value="">Seleccionar tipo de vía…</option>
                   {TIPOS_VIA.map((t) => (
                     <option key={t.value} value={t.value}>
@@ -180,16 +178,12 @@ export default function HomePage() {
                     </option>
                   ))}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">▾</span>
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#888888' }}>▾</span>
               </div>
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors shadow-lg"
-          >
+          <button type="submit" disabled={!canSubmit} className={buttonClass}>
             {loading ? (
               <>
                 <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -233,31 +227,39 @@ export default function HomePage() {
           <div className="flex items-start justify-between gap-4 mb-5 flex-wrap">
             <div>
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Ficha técnica</span>
-                <span className="text-slate-700">·</span>
-                <span className="text-xs font-mono text-slate-400">Proyecto en {alcaldia}</span>
+                <span className="text-xs font-mono uppercase tracking-wider" style={{ color: '#888888' }}>Ficha técnica</span>
+                <span style={{ color: '#333333' }}>·</span>
+                <span className="text-xs font-mono" style={{ color: '#888888' }}>Proyecto en {alcaldia}</span>
                 {tipoViaInfo && (
                   <>
-                    <span className="text-slate-700">·</span>
-                    <span className="text-xs font-mono text-slate-400">{tipoViaInfo.label}</span>
+                    <span style={{ color: '#333333' }}>·</span>
+                    <span className="text-xs font-mono" style={{ color: '#888888' }}>{tipoViaInfo.label}</span>
                   </>
                 )}
               </div>
-              <h2 className="text-2xl font-bold text-white">{normas.nombre}</h2>
-              <p className="text-slate-400 text-sm mt-1 max-w-2xl">{normas.descripcion}</p>
+              <h2
+                className="text-2xl"
+                style={{ fontFamily: 'var(--font-space-grotesk)', fontWeight: 700, color: '#f5f5f5' }}
+              >
+                {normas.nombre}
+              </h2>
+              <p className="text-sm mt-1 max-w-2xl" style={{ color: '#888888' }}>{normas.descripcion}</p>
             </div>
             <PDFExport normas={normas} alcaldia={alcaldia} intervencion={intervencion} tipoVia={tipoVia} />
           </div>
 
           {/* Nota de tipo de vía */}
           {normas.tipoViaNota && (
-            <div className="no-print mb-6 flex items-start gap-3 bg-blue-500/8 border border-blue-500/20 rounded-xl px-4 py-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0 mt-0.5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <div
+              className="no-print mb-6 flex items-start gap-3 rounded-xl px-4 py-3"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid #2a2a2a' }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ color: '#888888' }}>
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
-              <p className="text-blue-200 text-sm leading-relaxed">{normas.tipoViaNota}</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#e0e0e0' }}>{normas.tipoViaNota}</p>
             </div>
           )}
 
@@ -274,8 +276,19 @@ export default function HomePage() {
                 <span className="w-2 h-2 rounded-full bg-purple-400 inline-block" />
                 Parámetro específico de {tipoViaInfo?.label}
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                <span className="inline-block font-mono bg-slate-800 border border-slate-700 px-1 rounded text-slate-500" style={{ fontSize: '10px', textDecoration: 'line-through' }}>valor</span>
+              <div className="flex items-center gap-1.5 text-xs" style={{ color: '#888888' }}>
+                <span
+                  className="inline-block font-mono px-1 rounded"
+                  style={{
+                    background: '#1a1a1a',
+                    border: '1px solid #2a2a2a',
+                    color: '#888888',
+                    fontSize: '10px',
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  valor
+                </span>
                 Valor base antes del ajuste
               </div>
             </div>
@@ -283,17 +296,26 @@ export default function HomePage() {
 
           {/* Summary badges */}
           <div className="no-print flex flex-wrap gap-3 mb-8">
-            <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/25 rounded-lg px-3 py-1.5 text-sm">
-              <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
-              <span className="text-amber-300 font-medium">{normas.obligatorias.length} normas obligatorias</span>
+            <div
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+              style={{ background: 'rgba(212,160,23,0.08)', border: '1px solid rgba(212,160,23,0.2)' }}
+            >
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#d4a017' }} />
+              <span className="font-medium" style={{ color: '#d4a017' }}>{normas.obligatorias.length} normas obligatorias</span>
             </div>
-            <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/25 rounded-lg px-3 py-1.5 text-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
-              <span className="text-blue-300 font-medium">{normas.manualesNacionales.length} recomendaciones nacionales</span>
+            <div
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+              style={{ background: 'rgba(74,158,255,0.08)', border: '1px solid rgba(74,158,255,0.2)' }}
+            >
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#4a9eff' }} />
+              <span className="font-medium" style={{ color: '#4a9eff' }}>{normas.manualesNacionales.length} recomendaciones nacionales</span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/25 rounded-lg px-3 py-1.5 text-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
-              <span className="text-emerald-300 font-medium">{normas.internacionales.length} referencias internacionales</span>
+            <div
+              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+              style={{ background: 'rgba(46,204,113,0.08)', border: '1px solid rgba(46,204,113,0.2)' }}
+            >
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#2ecc71' }} />
+              <span className="font-medium" style={{ color: '#2ecc71' }}>{normas.internacionales.length} referencias internacionales</span>
             </div>
           </div>
 
@@ -309,7 +331,10 @@ export default function HomePage() {
           </div>
 
           {/* Disclaimer */}
-          <p className="no-print mt-8 text-xs text-slate-600 leading-relaxed border-t border-slate-800 pt-5">
+          <p
+            className="no-print mt-8 text-xs leading-relaxed border-t pt-5"
+            style={{ color: '#888888', borderColor: '#1f1f1f' }}
+          >
             Los valores presentados corresponden a las normas vigentes a la fecha de consulta.
             Verifique siempre la versión actualizada de cada instrumento normativo antes de
             aplicar los parámetros en proyecto. NormaUrb no sustituye la consulta a la autoridad competente.
@@ -320,7 +345,10 @@ export default function HomePage() {
       {/* Empty state */}
       {!normas && !loading && !error && (
         <div className="no-print max-w-6xl mx-auto px-6 pb-20 flex flex-col items-center text-center pt-4">
-          <div className="w-20 h-20 rounded-2xl bg-slate-800/60 border border-slate-700 flex items-center justify-center mb-5 text-slate-500">
+          <div
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mb-5"
+            style={{ background: '#111111', border: '1px solid #2a2a2a', color: '#888888' }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <rect x="1" y="10" width="10" height="11" rx="1" />
               <rect x="11" y="4" width="12" height="17" rx="1" />
@@ -335,8 +363,13 @@ export default function HomePage() {
               <line x1="19" y1="16" x2="19" y2="16" />
             </svg>
           </div>
-          <h3 className="text-slate-300 font-semibold text-lg mb-2">Selecciona los tres filtros</h3>
-          <p className="text-slate-500 text-sm max-w-md">
+          <h3
+            className="font-semibold text-lg mb-2"
+            style={{ color: '#f5f5f5', fontFamily: 'var(--font-space-grotesk)' }}
+          >
+            Selecciona los tres filtros
+          </h3>
+          <p className="text-sm max-w-md" style={{ color: '#888888' }}>
             Elige la alcaldía, el tipo de intervención y el tipo de vía para obtener la ficha
             técnica con parámetros ajustados al contexto específico del proyecto.
           </p>
@@ -346,7 +379,16 @@ export default function HomePage() {
                 key={t.value}
                 type="button"
                 onClick={() => setIntervencion(t.value)}
-                className="text-xs px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:text-slate-100 hover:border-blue-500 transition-colors"
+                className="text-xs px-3 py-1.5 rounded-full transition-colors"
+                style={{ background: '#111111', border: '1px solid #2a2a2a', color: '#888888' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#f5f5f5'
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#888888'
+                  e.currentTarget.style.borderColor = '#2a2a2a'
+                }}
               >
                 {t.label}
               </button>
@@ -356,7 +398,10 @@ export default function HomePage() {
       )}
 
       {/* Footer */}
-      <footer className="no-print border-t border-slate-800 py-6 text-center text-xs text-slate-600">
+      <footer
+        className="no-print py-6 text-center text-xs"
+        style={{ borderTop: '1px solid #1f1f1f', color: '#888888' }}
+      >
         NormaUrb · Consultor de Normas de Diseño Urbano · México, CDMX
       </footer>
     </div>
