@@ -1,11 +1,25 @@
 'use client'
 
-const LABEL_W = 170
-const BAR_W = 320
+const LABEL_W = 220
+const BAR_W = 270
 const VALUE_W = 100
-const SVG_W = LABEL_W + BAR_W + VALUE_W
-const ROW_H = 44
+const SVG_W = LABEL_W + BAR_W + VALUE_W   // 590 — igual que antes
+const ROW_H = 48
 const PAD = 10
+const SPLIT_AT = 26   // umbral de chars para partir en dos líneas
+
+function labelLines(text) {
+  if (text.length <= SPLIT_AT) return [text]
+  const mid = Math.floor(text.length / 2)
+  const before = text.lastIndexOf(' ', mid)
+  const after = text.indexOf(' ', mid)
+  let cut = -1
+  if (before === -1 && after === -1) return [text]
+  if (before === -1) cut = after
+  else if (after === -1) cut = before
+  else cut = (mid - before <= after - mid) ? before : after
+  return [text.slice(0, cut), text.slice(cut + 1)]
+}
 
 export default function BarChart({ data, title }) {
   if (!data || data.length === 0) return null
@@ -45,34 +59,50 @@ export default function BarChart({ data, title }) {
         <svg
           viewBox={`0 0 ${SVG_W} ${svgH}`}
           className="w-full"
-          style={{ maxWidth: SVG_W, minWidth: 320 }}
+          style={{ maxWidth: SVG_W, minWidth: 360 }}
           aria-label={title}
         >
           {parsed.map((item, i) => {
             const barPx = maxVal > 0 ? (item.num / maxVal) * BAR_W : 0
             const y = PAD + i * ROW_H
+            const lines = labelLines(item.label)
+            const twoLine = lines.length === 2
 
             return (
               <g key={i}>
-                {/* Etiqueta de fuente */}
-                <text
-                  x={LABEL_W - 10}
-                  y={y + ROW_H / 2 + 4}
-                  textAnchor="end"
-                  fill="#888888"
-                  fontSize="11.5"
-                  fontFamily="ui-monospace, monospace"
-                >
-                  {item.label}
-                </text>
+                {/* Etiqueta — una o dos líneas */}
+                {twoLine ? (
+                  <text
+                    x={LABEL_W - 10}
+                    y={y + ROW_H / 2 - 5}
+                    textAnchor="end"
+                    fill="#888888"
+                    fontSize="10"
+                    fontFamily="ui-monospace, monospace"
+                  >
+                    <tspan x={LABEL_W - 10} dy="0">{lines[0]}</tspan>
+                    <tspan x={LABEL_W - 10} dy="13">{lines[1]}</tspan>
+                  </text>
+                ) : (
+                  <text
+                    x={LABEL_W - 10}
+                    y={y + ROW_H / 2 + 4}
+                    textAnchor="end"
+                    fill="#888888"
+                    fontSize="11.5"
+                    fontFamily="ui-monospace, monospace"
+                  >
+                    {item.label}
+                  </text>
+                )}
 
                 {/* Pista de barra (fondo) — clase bar-track para override en print */}
                 <rect
                   className="bar-track"
                   x={LABEL_W}
-                  y={y + 10}
+                  y={y + 12}
                   width={BAR_W}
-                  height={ROW_H - 20}
+                  height={ROW_H - 24}
                   fill="#1a1a1a"
                   rx="5"
                 />
@@ -81,9 +111,9 @@ export default function BarChart({ data, title }) {
                 {barPx > 0 && (
                   <rect
                     x={LABEL_W}
-                    y={y + 10}
+                    y={y + 12}
                     width={barPx}
-                    height={ROW_H - 20}
+                    height={ROW_H - 24}
                     fill={item.color}
                     fillOpacity="0.85"
                     rx="5"
