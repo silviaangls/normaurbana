@@ -259,6 +259,22 @@ export default function HomePage() {
             <PDFExport normas={normas} alcaldia={alcaldia} intervencion={intervencion} tipoVia={tipoVia} />
           </div>
 
+          {/* Banner de especialista */}
+          {normas.requiereEspecialista && (
+            <div
+              className="no-print mb-6 flex items-start gap-3 rounded-xl px-4 py-3"
+              style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)' }}
+            >
+              <span className="text-base shrink-0" aria-hidden>⚠️</span>
+              <p className="text-sm leading-relaxed" style={{ color: '#fde68a' }}>
+                <strong>Esta intervención requiere la participación de especialistas:</strong>{' '}
+                {normas.especialistas.join(', ')}.{' '}
+                {normas.nota ? `${normas.nota} ` : ''}
+                Los parámetros son una referencia general.
+              </p>
+            </div>
+          )}
+
           {/* Nota de tipo de vía */}
           {normas.tipoViaNota && (
             <div
@@ -341,14 +357,15 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* Disclaimer */}
+          {/* Nota técnica — visible en pantalla y en PDF */}
           <p
-            className="no-print mt-8 text-xs leading-relaxed border-t pt-5"
+            className="mt-8 text-xs leading-relaxed border-t pt-5"
             style={{ color: '#888888', borderColor: '#1f1f1f' }}
           >
-            Los valores presentados corresponden a las normas vigentes a la fecha de consulta.
-            Verifique siempre la versión actualizada de cada instrumento normativo antes de
-            aplicar los parámetros en proyecto. NormaUrb no sustituye la consulta a la autoridad competente.
+            <strong style={{ color: '#aaaaaa' }}>Nota técnica:</strong>{' '}
+            Los parámetros presentados son referencias de carácter general basadas en normativa y manuales vigentes.
+            Su aplicación requiere evaluación específica del sitio y contexto urbano.
+            Esta herramienta no sustituye el criterio técnico profesional ni constituye un dictamen.
           </p>
         </section>
       )}
