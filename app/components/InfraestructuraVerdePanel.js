@@ -30,6 +30,52 @@ function ParamsTable({ parametros }) {
   )
 }
 
+function IntlTable({ fuentes }) {
+  return (
+    <div style={{ borderTop: '1px solid #1a2a1a' }}>
+      {/* Section header */}
+      <div
+        className="px-3 py-2 flex items-center gap-2"
+        style={{ background: 'rgba(46,204,113,0.06)', borderBottom: '1px solid #1a2a1a' }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ color: '#2ecc71' }}>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+        <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#2ecc71' }}>
+          Referencias Internacionales
+        </span>
+      </div>
+      <table className="w-full text-xs" style={{ borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ background: '#0a1a0a', borderBottom: '1px solid #1a2a1a' }}>
+            <th className="px-3 py-2 text-left font-medium" style={{ color: '#2ecc71', opacity: 0.7 }}>Fuente</th>
+            <th className="px-3 py-2 text-left font-medium" style={{ color: '#2ecc71', opacity: 0.7 }}>Referencia</th>
+            <th className="px-3 py-2 text-left font-medium" style={{ color: '#2ecc71', opacity: 0.7 }}>Aportación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {fuentes.map((f, i) => (
+            <tr key={i} style={{ borderTop: i > 0 ? '1px solid #1a2a1a' : 'none' }}>
+              <td className="px-3 py-2 whitespace-nowrap">
+                <span
+                  className="text-xs px-2 py-0.5 rounded"
+                  style={{ background: 'rgba(46,204,113,0.08)', border: '1px solid rgba(46,204,113,0.2)', color: '#86efac' }}
+                >
+                  {f.fuente}
+                </span>
+              </td>
+              <td className="px-3 py-2 whitespace-nowrap text-xs" style={{ color: '#555555' }}>{f.referencia}</td>
+              <td className="px-3 py-2 text-xs leading-relaxed" style={{ color: '#888888' }}>{f.parametro}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function TipoCard({ tipo, tipoViaLabel, recommended, expanded, onToggle }) {
   return (
     <div
@@ -126,7 +172,7 @@ function TipoCard({ tipo, tipoViaLabel, recommended, expanded, onToggle }) {
         </p>
       </div>
 
-      {/* Params — collapsed on screen, always expanded in PDF for recommended */}
+      {/* Params + intl refs — collapsed on screen, always expanded in PDF for recommended */}
       <div
         className={recommended ? 'iv-params-print' : undefined}
         style={{
@@ -137,6 +183,11 @@ function TipoCard({ tipo, tipoViaLabel, recommended, expanded, onToggle }) {
         <div className="px-5 py-3">
           <ParamsTable parametros={tipo.parametros} />
         </div>
+        {tipo.fuentesInternacionales?.length > 0 && (
+          <div className="px-5 pb-4">
+            <IntlTable fuentes={tipo.fuentesInternacionales} />
+          </div>
+        )}
       </div>
     </div>
   )
