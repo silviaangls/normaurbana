@@ -3,6 +3,21 @@
 :root {
   --background: #0a0a0a;
   --foreground: #f5f5f5;
+
+  /* ── Variables de diseño NormaUrb (fuente de verdad: lib/theme.js) ── */
+  --color-fondo: #0a0a0a;
+  --color-card: #111111;
+  --color-texto: #f5f5f5;
+  --color-texto-secundario: #888888;
+  --color-acento: #ffffff;
+  --color-obligatoria: #d4a017;
+  --color-nacional: #4a9eff;
+  --color-internacional: #2ecc71;
+  --color-advertencia: #f59e0b;
+  --color-boton-fondo: #ffffff;
+  --color-boton-texto: #000000;
+  --fuente-titulos: 'Space Grotesk', sans-serif;
+  --fuente-cuerpo: 'Inter', sans-serif;
 }
 
 @theme inline {
@@ -294,3 +309,11 @@ body {
     background: #f8fafc !important;
   }
 }
+
+/*
+  ============================================
+  PARA CAMBIAR COLORES O FUENTES:
+  Edita lib/theme.js — todos los valores
+  de diseño están centralizados ahí.
+  ============================================
+*/
