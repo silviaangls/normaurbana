@@ -232,4 +232,59 @@ body {
   .print-chart .bar-track {
     fill: #e2e8f0 !important;
   }
+
+  /* ════════════════════════════════════
+     INFRAESTRUCTURA VERDE (.iv-card)
+     ════════════════════════════════════ */
+
+  /* Forzar apertura de params en tipos recomendados */
+  .iv-params-print {
+    display: block !important;
+    border-top: 0.75pt solid #cbd5e1 !important;
+  }
+
+  /* Mostrar encabezado de tarjeta para impresión */
+  .iv-card-print-header {
+    display: block !important;
+  }
+
+  /* Tarjeta de tipo */
+  .iv-card {
+    background: #ffffff !important;
+    border: 1.5pt solid #475569 !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 12pt !important;
+    overflow: visible !important;
+  }
+
+  /* Tabla de parámetros dentro de iv-card */
+  .iv-card table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 8.5pt !important;
+  }
+
+  .iv-card th {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border: 0.75pt solid #94a3b8 !important;
+    padding: 4pt 7pt !important;
+    font-size: 7.5pt !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+  }
+
+  .iv-card td {
+    background: #ffffff !important;
+    border: 0.75pt solid #cbd5e1 !important;
+    padding: 4pt 7pt !important;
+    color: #1e293b !important;
+    vertical-align: top !important;
+  }
+
+  .iv-card tbody tr:nth-child(even) td {
+    background: #f8fafc !important;
+  }
 }

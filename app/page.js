@@ -4,6 +4,7 @@ import { useState } from 'react'
 import NormasTable from './components/NormasTable'
 import BarChart from './components/BarChart'
 import PDFExport from './components/PDFExport'
+import InfraestructuraVerdePanel from './components/InfraestructuraVerdePanel'
 import { ALCALDIAS, INTERVENCIONES, TIPOS_VIA } from '@/lib/normas'
 
 const selectClass =
@@ -56,6 +57,7 @@ export default function HomePage() {
   }
 
   const tipoViaInfo = TIPOS_VIA.find((t) => t.value === tipoVia)
+  const isIV = !!normas?.tiposInfraestructura
 
   const buttonClass = loading
     ? 'inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a1a1a] border border-[#2a2a2a] text-[#888888] cursor-not-allowed font-semibold text-sm rounded-lg transition-colors'
@@ -291,9 +293,9 @@ export default function HomePage() {
           )}
 
           {/* Leyenda de indicadores si hay modificaciones */}
-          {(normas.obligatorias.some(r => r.tipoViaModificado || r.tipoViaAdicional) ||
-            normas.manualesNacionales.some(r => r.tipoViaModificado || r.tipoViaAdicional) ||
-            normas.internacionales.some(r => r.tipoViaModificado || r.tipoViaAdicional)) && (
+          {!isIV && (normas.obligatorias?.some(r => r.tipoViaModificado || r.tipoViaAdicional) ||
+            normas.manualesNacionales?.some(r => r.tipoViaModificado || r.tipoViaAdicional) ||
+            normas.internacionales?.some(r => r.tipoViaModificado || r.tipoViaAdicional)) && (
             <div className="no-print flex flex-wrap gap-3 mb-6">
               <div className="flex items-center gap-1.5 text-xs text-orange-300">
                 <span className="w-2 h-2 rounded-full bg-orange-400 inline-block" />
@@ -321,39 +323,74 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Summary badges */}
-          <div className="no-print flex flex-wrap gap-3 mb-8">
-            <div
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
-              style={{ background: 'rgba(212,160,23,0.08)', border: '1px solid rgba(212,160,23,0.2)' }}
-            >
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#d4a017' }} />
-              <span className="font-medium" style={{ color: '#d4a017' }}>{normas.obligatorias.length} normas obligatorias</span>
+          {/* Summary badges — standard interventions only */}
+          {!isIV && (
+            <div className="no-print flex flex-wrap gap-3 mb-8">
+              <div
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+                style={{ background: 'rgba(212,160,23,0.08)', border: '1px solid rgba(212,160,23,0.2)' }}
+              >
+                <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#d4a017' }} />
+                <span className="font-medium" style={{ color: '#d4a017' }}>{normas.obligatorias?.length} normas obligatorias</span>
+              </div>
+              <div
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+                style={{ background: 'rgba(74,158,255,0.08)', border: '1px solid rgba(74,158,255,0.2)' }}
+              >
+                <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#4a9eff' }} />
+                <span className="font-medium" style={{ color: '#4a9eff' }}>{normas.manualesNacionales?.length} recomendaciones nacionales</span>
+              </div>
+              <div
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+                style={{ background: 'rgba(46,204,113,0.08)', border: '1px solid rgba(46,204,113,0.2)' }}
+              >
+                <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#2ecc71' }} />
+                <span className="font-medium" style={{ color: '#2ecc71' }}>{normas.internacionales?.length} referencias internacionales</span>
+              </div>
             </div>
-            <div
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
-              style={{ background: 'rgba(74,158,255,0.08)', border: '1px solid rgba(74,158,255,0.2)' }}
-            >
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#4a9eff' }} />
-              <span className="font-medium" style={{ color: '#4a9eff' }}>{normas.manualesNacionales.length} recomendaciones nacionales</span>
-            </div>
-            <div
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
-              style={{ background: 'rgba(46,204,113,0.08)', border: '1px solid rgba(46,204,113,0.2)' }}
-            >
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#2ecc71' }} />
-              <span className="font-medium" style={{ color: '#2ecc71' }}>{normas.internacionales.length} referencias internacionales</span>
-            </div>
-          </div>
+          )}
 
-          {/* Three tables */}
+          {/* IV summary badge */}
+          {isIV && (
+            <div className="no-print flex flex-wrap gap-3 mb-8">
+              <div
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+                style={{ background: 'rgba(46,204,113,0.08)', border: '1px solid rgba(46,204,113,0.2)' }}
+              >
+                <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#2ecc71' }} />
+                <span className="font-medium" style={{ color: '#2ecc71' }}>
+                  {normas.tiposInfraestructura.filter(t => t.aplicacion.includes(tipoVia)).length} tipos recomendados para {tipoViaInfo?.label}
+                </span>
+              </div>
+              <div
+                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid #2a2a2a' }}
+              >
+                <span className="w-2 h-2 rounded-full inline-block" style={{ background: '#555555' }} />
+                <span className="font-medium" style={{ color: '#888888' }}>
+                  {normas.tiposInfraestructura.length} tipos en total
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Content — IV panel or standard tables */}
           <div className="flex flex-col gap-6">
-            <NormasTable datos={normas.obligatorias} color="amber" />
-            <NormasTable datos={normas.manualesNacionales} color="blue" />
-            <NormasTable datos={normas.internacionales} color="emerald" />
-
-            {normas.chartData && normas.chartData.length > 0 && (
-              <BarChart data={normas.chartData} title={normas.chartTitle} />
+            {isIV ? (
+              <InfraestructuraVerdePanel
+                tiposInfraestructura={normas.tiposInfraestructura}
+                tipoVia={tipoVia}
+                tipoViaLabel={tipoViaInfo?.label}
+              />
+            ) : (
+              <>
+                <NormasTable datos={normas.obligatorias} color="amber" />
+                <NormasTable datos={normas.manualesNacionales} color="blue" />
+                <NormasTable datos={normas.internacionales} color="emerald" />
+                {normas.chartData && normas.chartData.length > 0 && (
+                  <BarChart data={normas.chartData} title={normas.chartTitle} />
+                )}
+              </>
             )}
           </div>
 
