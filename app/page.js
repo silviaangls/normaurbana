@@ -251,8 +251,8 @@ export default function HomePage() {
                 )}
               </div>
               <h2
-                className="text-2xl"
-                style={{ fontFamily: 'var(--font-space-grotesk)', fontWeight: 700, color: '#f5f5f5' }}
+                className="intervention-title text-2xl text-white print:text-gray-900"
+                style={{ fontFamily: 'var(--font-space-grotesk)', fontWeight: 700 }}
               >
                 {normas.nombre}
               </h2>

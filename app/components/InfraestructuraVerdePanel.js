@@ -96,8 +96,8 @@ function TipoCard({ tipo, tipoViaLabel, recommended, expanded, onToggle }) {
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <span
-              className="font-semibold text-base"
-              style={{ color: '#f5f5f5', fontFamily: 'var(--font-space-grotesk)' }}
+              className="intervention-title font-semibold text-base text-white print:text-gray-900"
+              style={{ fontFamily: 'var(--font-space-grotesk)' }}
             >
               {tipo.nombre}
             </span>

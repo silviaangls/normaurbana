@@ -223,6 +223,12 @@ body {
     overflow: visible !important;
   }
 
+  /* Títulos de intervención visibles en PDF */
+  .intervention-title, h1, h2, h3 {
+    color: #111111 !important;
+    -webkit-print-color-adjust: exact;
+  }
+
   /* Texto del SVG: oscuro para impresión */
   .print-chart text {
     fill: #334155 !important;
